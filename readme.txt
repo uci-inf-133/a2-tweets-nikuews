@@ -1,4 +1,4 @@
---Readme document for *YOUR NAME*, *YOUR_EMAIL@uci.edu*--
+--Readme document for Nicole Saengsouvanna, saengson@uci.edu--
 
 1. How many assignment points do you believe you completed (replace the *'s with your numbers)?
 
@@ -12,8 +12,9 @@
 
 
 3. What online resources did you consult when completing this assignment? (list sites like StackOverflow or specific URLs for tutorials; describe queries to Generative AI or use of AI-based code completion)
-
-
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString
+- https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll
+- https://www.omarileon.me/blog/javascript-format-percentage 
 
 4. What classmates or other individuals did you consult as part of this assignment? What did you discuss?
 
