@@ -27,45 +27,33 @@ class Tweet {
 
     const text_w_no_hashtag = text_w_no_link.replace(/#runKeeper/g, "");
     const text_w_filler = text_w_no_hashtag
-      .replace("just completed", "")
-      .replace("just posted", "")
-      .replace("achieved a new personal", "")
-      .replace("check it out!", "")
-      .replace(/[-–—]/g, "")
-      .replace("watch it here:", "")
-      .replace("with @runkeeper", "")
+      .replace(/https:\/\/t\.co\/\S+/g, "")
       .replace(/#runkeeper/g, "")
-      .replace(/a\s[\d.]+\s(?:mi|km)\srun/g, "")
-      .replace(".", "")
+      .replace(/just (completed|posted|finished|did)/g, "")
+      .replace(
+        /an?\s[\d.]+\s?(mi|km)\s(run|walk|ride|bike|hike|workout|activity)/g,
+        ""
+      )
+      .replace(/(with|via)\s@runkeeper/g, "")
+      .replace(/check (it )?out!?/g, "")
+      .replace(/achieved a new personal record!?/g, "")
+      .replace(/watch it here:?/g, "")
+      .replace(/[-–—]/g, "")
+      .replace(/\s+/g, " ")
       .trim();
 
-    return text_w_filler.length > 0;
+    if (text_w_filler === "" || text_w_filler.length < 10) {
+      return false;
+    }
+    return true;
   }
 
   get writtenText(): string {
     if (!this.written) {
       return "";
+    } else {
+      return this.text;
     }
-    const text = this.text.toLowerCase();
-
-    const text_w_no_link = text.replace(/https:\/\/t\.co\/\S+/g, "");
-
-    const text_w_no_hashtag = text_w_no_link.replace(/#runKeeper/g, "");
-    const text_w_no_filler = text_w_no_hashtag
-      .replace("just completed", "")
-      .replace("just posted", "")
-      .replace("achieved a new personal", "")
-      .replace("check it out!", "")
-      .replace(/[-–—]/g, "")
-      .replace("watch it here:", "")
-      .replace("with @runkeeper", "")
-      .replace(/#runkeeper/g, "")
-      .replace(/a\s[\d.]+\s(?:mi|km)\srun/g, "")
-      .replace(".", "")
-      .trim();
-
-    //TODO: parse the written text from the tweet
-    return text_w_no_filler;
   }
 
   get activityType(): string {
@@ -73,15 +61,45 @@ class Tweet {
       return "unknown";
     }
     //TODO: parse the activity type from the text of the tweet
-    return "";
+    const text = this.text.toLowerCase();
+
+    const text_w_no_filler = text
+      .replace(/#runkeeper/g, "")
+      .replace(/@runkeeper/g, "")
+      .trim();
+
+    if (text_w_no_filler.includes("run")) return "run";
+    if (text_w_no_filler.includes("hike")) return "hike";
+    if (text_w_no_filler.includes("ride")) return "bike";
+    if (text_w_no_filler.includes("bike")) return "bike";
+    if (text_w_no_filler.includes("walk")) return "walk";
+    if (text_w_no_filler.includes("swim")) return "swim";
+    if (text_w_no_filler.includes("yoga")) return "yoga";
+    if (text_w_no_filler.includes("elliptical")) return "elliptical";
+    if (text_w_no_filler.includes("row")) return "row";
+
+    return "unknown";
   }
 
   get distance(): number {
     if (this.source != "completed_event") {
       return 0;
     }
-    //TODO: prase the distance from the text of the tweet
-    return 0;
+    // const text_distance = this.text.match(/[\d.]+\s?(km|mi)/i);
+    const text_distance = this.text.match(/([\d.]+)\s?(km|mi)/i);
+
+    if (!text_distance) {
+      return 0;
+    }
+
+    let distance = parseFloat(text_distance[1]);
+    const unit = text_distance[2].toLowerCase();
+
+    if (unit === "km") {
+      distance *= 0.621;
+    }
+
+    return distance;
   }
 
   getHTMLTableRow(rowNumber: number): string {

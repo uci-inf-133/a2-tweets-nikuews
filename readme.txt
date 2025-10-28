@@ -15,6 +15,13 @@
 - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString
 - https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll
 - https://www.omarileon.me/blog/javascript-format-percentage 
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace
+- https://www.w3schools.com/jsref/jsref_getday.asp 
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+
+
 
 4. What classmates or other individuals did you consult as part of this assignment? What did you discuss?
 
