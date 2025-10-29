@@ -32,6 +32,12 @@ function addEventHandlerForSearch() {
 
   textFilter.addEventListener("input", (e) => {
     const user_input = e.target.value.toLowerCase();
+    if (user_input === "") {
+      tweet_table.innerHTML = "";
+      searchCount.innerText = 0;
+      searchText.innerText = "";
+      return;
+    }
     const filtered_text = written_t.filter((t) =>
       t.text.toLowerCase().includes(user_input)
     );
