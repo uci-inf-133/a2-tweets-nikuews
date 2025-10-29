@@ -22,11 +22,7 @@ class Tweet {
   get written(): boolean {
     //TODO: identify whether the tweet is written
     const text = this.text.toLowerCase();
-
-    const text_w_no_link = text.replace(/https:\/\/t\.co\/\S+/g, "");
-
-    const text_w_no_hashtag = text_w_no_link.replace(/#runKeeper/g, "");
-    const text_w_filler = text_w_no_hashtag
+    const text_w_no_filler = text
       .replace(/https:\/\/t\.co\/\S+/g, "")
       .replace(/#runkeeper/g, "")
       .replace(/just (completed|posted|finished|did)/g, "")
@@ -42,7 +38,7 @@ class Tweet {
       .replace(/\s+/g, " ")
       .trim();
 
-    if (text_w_filler === "" || text_w_filler.length < 10) {
+    if (text_w_no_filler === "" || text_w_no_filler.length < 10) {
       return false;
     }
     return true;
@@ -68,15 +64,28 @@ class Tweet {
       .replace(/@runkeeper/g, "")
       .trim();
 
-    if (text_w_no_filler.includes("run")) return "run";
+    if (text_w_no_filler.includes("run") && !text_w_no_filler.includes("ski"))
+      return "run";
     if (text_w_no_filler.includes("hike")) return "hike";
     if (text_w_no_filler.includes("ride")) return "bike";
-    if (text_w_no_filler.includes("bike")) return "bike";
-    if (text_w_no_filler.includes("walk")) return "walk";
+    if (text_w_no_filler.includes("mtn")) return "mtn bike";
+    if (text_w_no_filler.includes("bike") && !text_w_no_filler.includes("mtn"))
+      return "bike";
+    if (text_w_no_filler.includes("nordic")) return "nordic walk";
+    if (
+      text_w_no_filler.includes("walk") &&
+      !text_w_no_filler.includes("nordic")
+    )
+      return "walk";
+    if (text_w_no_filler.includes("ski")) return "ski";
     if (text_w_no_filler.includes("swim")) return "swim";
     if (text_w_no_filler.includes("yoga")) return "yoga";
     if (text_w_no_filler.includes("elliptical")) return "elliptical";
     if (text_w_no_filler.includes("row")) return "row";
+    if (text_w_no_filler.includes("cycling")) return "bike";
+    if (text_w_no_filler.includes("snowboard")) return "snowboard";
+    if (text_w_no_filler.includes("skating")) return "skate";
+    if (text_w_no_filler.includes("treadmill")) return "treadmill";
 
     return "unknown";
   }
@@ -85,7 +94,6 @@ class Tweet {
     if (this.source != "completed_event") {
       return 0;
     }
-    // const text_distance = this.text.match(/[\d.]+\s?(km|mi)/i);
     const text_distance = this.text.match(/([\d.]+)\s?(km|mi)/i);
 
     if (!text_distance) {
@@ -104,6 +112,13 @@ class Tweet {
 
   getHTMLTableRow(rowNumber: number): string {
     //TODO: return a table row which summarizes the tweet with a clickable link to the RunKeeper activity
-    return "<tr></tr>";
+    const link = this.text.replace(/https:\/\/t\.co\/\S+/g, (match) => {
+      return `<a href="${match}" target="_blank">${match}</a>`.trim();
+    });
+    return `<tr>
+      <td>${rowNumber}</td>
+      <td>${this.activityType}</td>
+      <td>${link}</td>
+    </tr>`;
   }
 }
