@@ -173,20 +173,23 @@ function parseTweets(runkeeper_tweets) {
     },
   };
 
-  let showAggregate = false;
+  let showAggregate = true;
+  vegaEmbed("#distanceVisAggregated", activity_mean_graph, {
+    actions: false,
+  });
+  document.getElementById("aggregate").innerText = "Show all activities";
 
   document.getElementById("aggregate").addEventListener("click", () => {
     showAggregate = !showAggregate;
-
     if (showAggregate) {
       vegaEmbed("#distanceVisAggregated", activity_mean_graph, {
         actions: false,
       });
-      document.getElementById("aggregate").innerText = "Show Mean";
+      document.getElementById("aggregate").innerText = "Show all activities";
       document.getElementById("distanceVis").innerHTML = "";
     } else {
       vegaEmbed("#distanceVis", activity_day_graph, { actions: false });
-      document.getElementById("aggregate").innerText = "Show all activites";
+      document.getElementById("aggregate").innerText = "Show means";
       document.getElementById("distanceVisAggregated").innerHTML = "";
     }
   });
